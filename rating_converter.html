@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertitore Rating Ippici</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Dati dei rating - DATI CORRETTI dal file aggiornato gennaio 2026
+        const ratingsData = [{"Francia": 64.5, "Gran_Bretagna": 139, "Italia": 129.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 63.5, "Gran_Bretagna": 137, "Italia": 128.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 62.0, "Gran_Bretagna": 134, "Italia": 127.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 61.0, "Gran_Bretagna": 132, "Italia": 126.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 60.0, "Gran_Bretagna": 130, "Italia": 125.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 59.0, "Gran_Bretagna": 128, "Italia": 124.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 58.0, "Gran_Bretagna": 126, "Italia": 123.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 56.5, "Gran_Bretagna": 123, "Italia": 121.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 55.5, "Gran_Bretagna": 121, "Italia": 120.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 55.0, "Gran_Bretagna": 120, "Italia": 120.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 54.5, "Gran_Bretagna": 119, "Italia": 119.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 54.0, "Gran_Bretagna": 118, "Italia": 119.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 53.5, "Gran_Bretagna": 117, "Italia": 118.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 53.0, "Gran_Bretagna": 116, "Italia": 118.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 52.5, "Gran_Bretagna": 115, "Italia": 117.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 52.0, "Gran_Bretagna": 114, "Italia": 117.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 51.0, "Gran_Bretagna": 112, "Italia": 116.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 50.5, "Gran_Bretagna": 111, "Italia": 115.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 50.0, "Gran_Bretagna": 110, "Italia": 115.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 49.5, "Gran_Bretagna": 109, "Italia": 114.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 49.0, "Gran_Bretagna": 108, "Italia": 114.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 48.5, "Gran_Bretagna": 107, "Italia": 113.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 48.0, "Gran_Bretagna": 106, "Italia": 113.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 47.5, "Gran_Bretagna": 105, "Italia": 112.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 47.0, "Gran_Bretagna": 104, "Italia": 112.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 46.5, "Gran_Bretagna": 103, "Italia": 111.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 45.5, "Gran_Bretagna": 101, "Italia": 110.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 45.0, "Gran_Bretagna": 100, "Italia": 110.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 44.5, "Gran_Bretagna": 99, "Italia": 109.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 44.0, "Gran_Bretagna": 98, "Italia": 109.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 43.5, "Gran_Bretagna": 97, "Italia": 108.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 43.0, "Gran_Bretagna": 96, "Italia": 108.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 42.5, "Gran_Bretagna": 95, "Italia": 107.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 42.0, "Gran_Bretagna": 94, "Italia": 107.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 41.5, "Gran_Bretagna": 93, "Italia": 106.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": false}, {"Francia": 40.5, "Gran_Bretagna": 91, "Italia": 105.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": true}, {"Francia": 40.0, "Gran_Bretagna": 90, "Italia": 105.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": true}, {"Francia": 39.5, "Gran_Bretagna": 89, "Italia": 104.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": true}, {"Francia": 39.0, "Gran_Bretagna": 88, "Italia": 104.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": true}, {"Francia": 38.5, "Gran_Bretagna": 87, "Italia": 103.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": true}, {"Francia": 38.0, "Gran_Bretagna": 86, "Italia": 103.0, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": true}, {"Francia": 37.5, "Gran_Bretagna": 85, "Italia": 102.5, "Classe_5": false, "Classe_4": false, "Classe_3": false, "Classe_2": true}, {"Francia": 37.0, "Gran_Bretagna": 84, "Italia": 102.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 36.5, "Gran_Bretagna": 83, "Italia": 101.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 36.0, "Gran_Bretagna": 82, "Italia": 101.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 35.0, "Gran_Bretagna": 80, "Italia": 100.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 34.5, "Gran_Bretagna": 79, "Italia": 99.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 34.0, "Gran_Bretagna": 78, "Italia": 99.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 33.5, "Gran_Bretagna": 77, "Italia": 98.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 33.0, "Gran_Bretagna": 76, "Italia": 98.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 32.5, "Gran_Bretagna": 75, "Italia": 97.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 32.0, "Gran_Bretagna": 74, "Italia": 97.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 31.5, "Gran_Bretagna": 73, "Italia": 96.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 31.0, "Gran_Bretagna": 72, "Italia": 96.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 30.5, "Gran_Bretagna": 71, "Italia": 95.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 29.5, "Gran_Bretagna": 69, "Italia": 94.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 29.0, "Gran_Bretagna": 68, "Italia": 94.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 28.5, "Gran_Bretagna": 67, "Italia": 93.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 28.0, "Gran_Bretagna": 66, "Italia": 93.0, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 27.5, "Gran_Bretagna": 65, "Italia": 92.5, "Classe_5": false, "Classe_4": false, "Classe_3": true, "Classe_2": true}, {"Francia": 27.0, "Gran_Bretagna": 64, "Italia": 92.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": true}, {"Francia": 26.5, "Gran_Bretagna": 63, "Italia": 91.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": true}, {"Francia": 26.0, "Gran_Bretagna": 62, "Italia": 91.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": true}, {"Francia": 25.5, "Gran_Bretagna": 61, "Italia": 90.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": true}, {"Francia": 25.0, "Gran_Bretagna": 60, "Italia": 90.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": true}, {"Francia": 24.0, "Gran_Bretagna": 58, "Italia": 89.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 23.5, "Gran_Bretagna": 57, "Italia": 88.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 23.0, "Gran_Bretagna": 56, "Italia": 88.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 22.5, "Gran_Bretagna": 55, "Italia": 87.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 22.0, "Gran_Bretagna": 54, "Italia": 87.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 21.5, "Gran_Bretagna": 53, "Italia": 86.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 21.0, "Gran_Bretagna": 52, "Italia": 86.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 20.5, "Gran_Bretagna": 51, "Italia": 85.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 20.0, "Gran_Bretagna": 50, "Italia": 85.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 19.5, "Gran_Bretagna": 49, "Italia": 84.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 18.5, "Gran_Bretagna": 47, "Italia": 83.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 18.0, "Gran_Bretagna": 46, "Italia": 83.0, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 17.5, "Gran_Bretagna": 45, "Italia": 82.5, "Classe_5": false, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 17.0, "Gran_Bretagna": 44, "Italia": 82.0, "Classe_5": true, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 16.5, "Gran_Bretagna": 43, "Italia": 81.5, "Classe_5": true, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 16.0, "Gran_Bretagna": 42, "Italia": 81.0, "Classe_5": true, "Classe_4": true, "Classe_3": true, "Classe_2": false}, {"Francia": 15.5, "Gran_Bretagna": 41, "Italia": 80.5, "Classe_5": true, "Classe_4": true, "Classe_3": true, "Classe_2": false}];
+
+        function RatingConverter() {
+            const [selectedCountry, setSelectedCountry] = useState('Italia');
+            const [inputValue, setInputValue] = useState('');
+            const [result, setResult] = useState(null);
+
+            const countries = {
+                'Francia': { label: 'Francia (Conv. UFF)', unit: 'kg', step: 0.5 },
+                'Gran_Bretagna': { label: 'Gran Bretagna (BHA)', unit: 'lb', step: 1 },
+                'Italia': { label: 'Italia (UFF)', unit: 'rating', step: 0.5 }
+            };
+
+            const findRating = (country, value) => {
+                const numValue = parseFloat(value);
+                if (isNaN(numValue)) return null;
+
+                // Cerca corrispondenza esatta
+                let match = ratingsData.find(r => r[country] === numValue);
+                
+                // Se non trova corrispondenza esatta, cerca il più vicino
+                if (!match) {
+                    match = ratingsData.reduce((prev, curr) => {
+                        return Math.abs(curr[country] - numValue) < Math.abs(prev[country] - numValue) ? curr : prev;
+                    });
+                }
+                
+                return match;
+            };
+
+            const handleSearch = () => {
+                if (!inputValue) {
+                    setResult(null);
+                    return;
+                }
+                
+                const match = findRating(selectedCountry, inputValue);
+                setResult(match);
+            };
+
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            };
+
+            return (
+                <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-4xl mx-auto">
+                        {/* Header */}
+                        <div className="text-center mb-8">
+                            <h1 className="text-4xl font-bold text-slate-800 mb-3">
+                                🏇 Convertitore Rating Ippici
+                            </h1>
+                            <p className="text-slate-600 text-lg">
+                                Verifica l'equivalenza dei rating e l'ammissibilità agli handicap
+                            </p>
+                        </div>
+
+                        {/* Input Card */}
+                        <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
+                            <label className="block text-sm font-semibold text-slate-700 mb-4">
+                                Seleziona il sistema di rating
+                            </label>
+                            
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                                {Object.entries(countries).map(([key, info]) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => {
+                                            setSelectedCountry(key);
+                                            setInputValue('');
+                                            setResult(null);
+                                        }}
+                                        className={`p-4 rounded-xl font-medium transition-all duration-200 ${
+                                            selectedCountry === key
+                                                ? 'bg-blue-600 text-white shadow-md scale-105'
+                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                                        }`}
+                                    >
+                                        {info.label}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <label className="block text-sm font-semibold text-slate-700 mb-2">
+                                Inserisci il rating
+                            </label>
+                            
+                            <div className="flex gap-3">
+                                <div className="flex-1 relative">
+                                    <input
+                                        type="number"
+                                        step={countries[selectedCountry].step}
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        onKeyPress={handleKeyPress}
+                                        placeholder={`Es: ${selectedCountry === 'Italia' ? '91' : selectedCountry === 'Francia' ? '26' : '62'}`}
+                                        className="w-full px-4 py-3 text-lg border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
+                                    />
+                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">
+                                        {countries[selectedCountry].unit}
+                                    </span>
+                                </div>
+                                <button
+                                    onClick={handleSearch}
+                                    className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+                                >
+                                    Cerca
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Results Card */}
+                        {result && (
+                            <div className="bg-white rounded-2xl shadow-lg p-8 space-y-6 animate-fadeIn">
+                                {/* Rating Equivalenti */}
+                                <div>
+                                    <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                        <span className="text-2xl">🔄</span>
+                                        Rating Equivalenti
+                                    </h2>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border-2 border-blue-200">
+                                            <div className="text-sm font-semibold text-blue-700 mb-1">Francia (Conv. UFF)</div>
+                                            <div className="text-3xl font-bold text-blue-900">{result.Francia}</div>
+                                            <div className="text-sm text-blue-600 mt-1">kg (1 pt = 1 kg)</div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-5 border-2 border-red-200">
+                                            <div className="text-sm font-semibold text-red-700 mb-1">Gran Bretagna (BHA)</div>
+                                            <div className="text-3xl font-bold text-red-900">{result.Gran_Bretagna}</div>
+                                            <div className="text-sm text-red-600 mt-1">libbre (1 pt = 1 lb)</div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border-2 border-green-200">
+                                            <div className="text-sm font-semibold text-green-700 mb-1">Italia (UFF)</div>
+                                            <div className="text-3xl font-bold text-green-900">{result.Italia}</div>
+                                            <div className="text-sm text-green-600 mt-1">rating (1 pt = 0.5 kg)</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Ammissibilità Handicap */}
+                                <div>
+                                    <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                        <span className="text-2xl">🎯</span>
+                                        Ammissibilità agli Handicap
+                                    </h2>
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                        {[
+                                            { key: 'Classe_5', label: 'Classe 5', color: 'emerald' },
+                                            { key: 'Classe_4', label: 'Classe 4', color: 'blue' },
+                                            { key: 'Classe_3', label: 'Classe 3', color: 'amber' },
+                                            { key: 'Classe_2', label: 'Classe 2', color: 'purple' }
+                                        ].map(({ key, label, color }) => (
+                                            <div
+                                                key={key}
+                                                className={`p-4 rounded-xl text-center font-semibold ${
+                                                    result[key]
+                                                        ? `bg-${color}-100 border-2 border-${color}-400 text-${color}-800`
+                                                        : 'bg-slate-100 border-2 border-slate-300 text-slate-500'
+                                                }`}
+                                            >
+                                                <div className="text-2xl mb-1">
+                                                    {result[key] ? '✅' : '❌'}
+                                                </div>
+                                                <div className="text-sm">{label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="mt-4 p-4 bg-slate-50 rounded-lg text-sm text-slate-600">
+                                        <strong>Nota:</strong> {
+                                            [result.Classe_5, result.Classe_4, result.Classe_3, result.Classe_2].filter(Boolean).length === 0
+                                                ? 'Questo rating non è ammesso a nessuna classe di handicap.'
+                                                : `Questo rating può partecipare agli handicap di ${
+                                                    [
+                                                        result.Classe_5 && 'Classe 5',
+                                                        result.Classe_4 && 'Classe 4',
+                                                        result.Classe_3 && 'Classe 3',
+                                                        result.Classe_2 && 'Classe 2'
+                                                    ].filter(Boolean).join(', ')
+                                                }.`
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Info Footer */}
+                        <div className="mt-8 text-center text-sm text-slate-500">
+                            <p>Dati aggiornati a Gennaio 2026 • Tabella di comparazione UFF</p>
+                            <p className="mt-1">82 livelli di rating disponibili (da 80.5 a 129.5 Italia)</p>
+                        </div>
+                    </div>
+
+                    <style>{`
+                        @keyframes fadeIn {
+                            from {
+                                opacity: 0;
+                                transform: translateY(10px);
+                            }
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+                        .animate-fadeIn {
+                            animation: fadeIn 0.3s ease-out;
+                        }
+                    `}</style>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<RatingConverter />, document.getElementById('root'));
+    </script>
+</body>
+</html>
